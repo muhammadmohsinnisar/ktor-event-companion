@@ -1,0 +1,15 @@
+# Kotlin & Gradle
+/build/
+/.gradle/
+/out/
+*.iml
+.idea/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# Kotlin Native
+/bin/
