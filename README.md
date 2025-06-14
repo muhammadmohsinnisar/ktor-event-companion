@@ -1,46 +1,122 @@
-# ktor-event-companion
+# 📅 Ktor Event Companion Backend
 
-This project was created using the [Ktor Project Generator](https://start.ktor.io).
+A lightweight Kotlin-based backend service built with [Ktor](https://ktor.io/), using PostgreSQL and [Exposed](https://github.com/JetBrains/Exposed) as the ORM. This service is designed to manage events, including CRUD operations for event entities.
 
-Here are some useful links to get you started:
+---
 
-- [Ktor Documentation](https://ktor.io/docs/home.html)
-- [Ktor GitHub page](https://github.com/ktorio/ktor)
-- The [Ktor Slack chat](https://app.slack.com/client/T09229ZC6/C0A974TJ9). You'll need to [request an invite](https://surveys.jetbrains.com/s3/kotlin-slack-sign-up) to join.
+## 🚀 Features
 
-## Features
+- 🔧 REST API with Ktor
+- 📦 PostgreSQL integration via Exposed ORM
+- 🌐 JSON serialization with `kotlinx.serialization`
+- 🧪 Simple test setup with Ktor test host
+- 🧰 Coroutine-friendly database transactions
 
-Here's a list of features included in this project:
+---
 
-| Name                                                                   | Description                                                                        |
-| ------------------------------------------------------------------------|------------------------------------------------------------------------------------ |
-| [AsyncAPI](https://start.ktor.io/p/asyncapi)                           | Generates and serves AsyncAPI documentation                                        |
-| [Routing](https://start.ktor.io/p/routing)                             | Provides a structured routing DSL                                                  |
-| [kotlinx.serialization](https://start.ktor.io/p/kotlinx-serialization) | Handles JSON serialization using kotlinx.serialization library                     |
-| [Content Negotiation](https://start.ktor.io/p/content-negotiation)     | Provides automatic content conversion according to Content-Type and Accept headers |
-| [Postgres](https://start.ktor.io/p/postgres)                           | Adds Postgres database to your application                                         |
-| [Exposed](https://start.ktor.io/p/exposed)                             | Adds Exposed database to your application                                          |
-| [Call Logging](https://start.ktor.io/p/call-logging)                   | Logs client requests                                                               |
-| [Authentication](https://start.ktor.io/p/auth)                         | Provides extension point for handling the Authorization header                     |
+## 📁 Project Structure
 
-## Building & Running
+src/
+├── main/
+│ ├── kotlin/
+│ │ ├── com.mohsin/
+│ │ │ ├── models/ # Event data model and schema
+│ │ │ ├── services/ # EventService with DB access
+│ │ │ └── Application.kt
+│ └── resources/
+│ ├── application.conf
+│ └── application.yaml
+---
 
-To build or run the project, use one of the following tasks:
+## 🔌 API Endpoints
 
-| Task                          | Description                                                          |
-| -------------------------------|---------------------------------------------------------------------- |
-| `./gradlew test`              | Run the tests                                                        |
-| `./gradlew build`             | Build everything                                                     |
-| `buildFatJar`                 | Build an executable JAR of the server with all dependencies included |
-| `buildImage`                  | Build the docker image to use with the fat JAR                       |
-| `publishImageToLocalRegistry` | Publish the docker image locally                                     |
-| `run`                         | Run the server                                                       |
-| `runDocker`                   | Run using the local docker image                                     |
+| Method | Endpoint         | Description                |
+|--------|------------------|----------------------------|
+| GET    | `/events`        | Get all events             |
+| GET    | `/events/{id}`   | Get an event by ID         |
+| POST   | `/events`        | Create a new event         |
+| DELETE | `/events/{id}`   | Delete an event by ID      |
 
-If the server starts successfully, you'll see the following output:
+> ✅ Uses JSON request/response format.
 
+---
+
+## 🛠️ Setup Instructions
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/your-username/ktor-event-companion.git
+cd ktor-event-companion
 ```
-2024-12-04 14:32:45.584 [main] INFO  Application - Application started in 0.303 seconds.
-2024-12-04 14:32:45.682 [main] INFO  Application - Responding at http://0.0.0.0:8080
+
+### 2. Configure PostgreSQL
+- Update application.yaml or application.conf with your PostgreSQL credentials:
+```bash
+ktor:
+  deployment:
+    port: 8080
+  application:
+    modules:
+      - com.mohsin.ApplicationKt.module
+
+  database:
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/ktor
+    user: postgres
+    password: your-password
 ```
+💡 Make sure the events table exists, or create it via migration using SchemaUtils.create(Events).
+
+### 3. Run the app
+bash
+```
+./gradlew run
+```
+
+Server will start at: http://localhost:8080
+
+## 🧪 Testing API with Postman
+
+### 📌 Create event (POST)
+**Endpoint:**
+POST http://localhost:8080/events
+
+**JSON Body:**
+```json
+{
+  "name": "Tech Conference",
+  "description": "A conference about the latest in tech.",
+  "date": "2025-07-01",
+  "location": "Berlin"
+}
+```
+
+📥 Fetch all events (GET)
+Endpoint:
+```
+GET http://localhost:8080/events
+```
+🔍 Fetch event by ID (GET)
+
+Endpoint:
+```
+GET http://localhost:8080/events/1
+```
+
+❌ Delete event (DELETE)
+Endpoint:
+
+DELETE http://localhost:8080/events/1
+
+🪪 License
+This project is open-sourced under the MIT License. See LICENSE for details.
+
+Let me know if you'd like this merged into your full `README.md` file or committed to the repo.
+
+
+
+
+
+
+
 
