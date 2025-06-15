@@ -27,15 +27,14 @@ fun Application.module() {
     val dbUrl = System.getenv("DATABASE_URL") ?: error("DATABASE_URL not found")
 
     val uri = java.net.URI(dbUrl)
-    val userInfo = uri.userInfo?.split(":") ?: error("Missing user info in DATABASE_URL")
+    val userInfo = uri.userInfo.split(":")
     val username = userInfo[0]
     val password = userInfo[1]
     val host = uri.host
     val port = uri.port
     val database = uri.path.removePrefix("/")
 
-    val jdbcUrl = "jdbc:postgresql://$host:$port/$database"
-    println("Connecting to: $jdbcUrl")
+    val jdbcUrl = "jdbc:postgresql://$host:$port/$database?sslmode=require"
     Database.connect(
         url = jdbcUrl,
         driver = "org.postgresql.Driver",
