@@ -24,12 +24,22 @@ fun main() {
 
 fun Application.module() {
     // Connect to PostgreSQL
+    val dbUrl = System.getenv("DATABASE_URL") ?: error("DATABASE_URL not found")
+
+    val jdbcUrl = "jdbc:postgresql://${dbUrl.removePrefix("postgres://")
+        .replace(":", ":")
+        .replace("@", "/")}?sslmode=require"
+
+    val uri = java.net.URI(dbUrl)
+    val userInfo = uri.userInfo.split(":")
+
     Database.connect(
-        url = "jdbc:postgresql://localhost:5432/ktor",
+        url = jdbcUrl,
         driver = "org.postgresql.Driver",
-        user = "postgres",
-        password = "your_password" // Replace with your password
+        user = userInfo[0],
+        password = userInfo[1]
     )
+
 
     // Create tables
     transaction {
