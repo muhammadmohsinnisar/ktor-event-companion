@@ -23,23 +23,25 @@ fun main() {
 }
 
 fun Application.module() {
-    // Connect to PostgreSQL
+    // Expect format: postgres://user:password@host:port/dbname
     val dbUrl = System.getenv("DATABASE_URL") ?: error("DATABASE_URL not found")
 
-    val jdbcUrl = "jdbc:postgresql://${dbUrl.removePrefix("postgres://")
-        .replace(":", ":")
-        .replace("@", "/")}?sslmode=require"
-
     val uri = java.net.URI(dbUrl)
-    val userInfo = uri.userInfo.split(":")
+    val userInfo = uri.userInfo?.split(":") ?: error("Missing user info in DATABASE_URL")
+    val username = userInfo[0]
+    val password = userInfo[1]
+    val host = uri.host
+    val port = uri.port
+    val database = uri.path.removePrefix("/")
 
+    val jdbcUrl = "jdbc:postgresql://$host:$port/$database"
+    println("Connecting to: $jdbcUrl")
     Database.connect(
         url = jdbcUrl,
         driver = "org.postgresql.Driver",
-        user = userInfo[0],
-        password = userInfo[1]
+        user = username,
+        password = password
     )
-
 
     // Create tables
     transaction {
@@ -56,3 +58,4 @@ fun Application.module() {
         sessionRoutes()
     }
 }
+
