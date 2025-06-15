@@ -1,7 +1,11 @@
 package com.mohsin
 
 import com.mohsin.models.Events
+import com.mohsin.models.Sessions
+import com.mohsin.models.Speakers
 import com.mohsin.routes.eventRoutes
+import com.mohsin.routes.sessionRoutes
+import com.mohsin.routes.speakerRoutes
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.application.*
@@ -29,7 +33,7 @@ fun Application.module() {
 
     // Create tables
     transaction {
-        SchemaUtils.create(Events)
+        SchemaUtils.createMissingTablesAndColumns(Events, Speakers, Sessions)
     }
 
     install(ContentNegotiation) {
@@ -38,5 +42,7 @@ fun Application.module() {
 
     routing {
         eventRoutes()
+        speakerRoutes()
+        sessionRoutes()
     }
 }

@@ -16,9 +16,6 @@ data class Event(
 )
 
 object Events : Table() {
-    fun select(condition: SqlExpressionBuilder.() -> Op<Boolean>): Query {
-        return this.select { condition(SqlExpressionBuilder) }
-    }
 
     val id = integer("id").autoIncrement()
     val name = varchar("name", 100)

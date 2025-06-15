@@ -18,30 +18,32 @@ class EventService {
             it[description] = event.description
             it[date] = event.date
             it[location] = event.location
-        }[Events.id]
+        } get Events.id
     }
 
     suspend fun getAll(): List<Event> = dbQuery {
-        Events.selectAll().map {
+        Events.selectAll().map { row ->
             Event(
-                id = it[Events.id],
-                name = it[Events.name],
-                description = it[Events.description],
-                date = it[Events.date],
-                location = it[Events.location]
+                id = row[Events.id],
+                name = row[Events.name],
+                description = row[Events.description],
+                date = row[Events.date],
+                location = row[Events.location]
             )
         }
     }
 
     suspend fun getById(id: Int): Event? = dbQuery {
-        Events.select { Events.id eq id }
-            .map {
+        Events
+            .selectAll()
+            .where { Events.id eq id }
+            .map { row ->
                 Event(
-                    id = it[Events.id],
-                    name = it[Events.name],
-                    description = it[Events.description],
-                    date = it[Events.date],
-                    location = it[Events.location]
+                    id = row[Events.id],
+                    name = row[Events.name],
+                    description = row[Events.description],
+                    date = row[Events.date],
+                    location = row[Events.location]
                 )
             }
             .singleOrNull()
