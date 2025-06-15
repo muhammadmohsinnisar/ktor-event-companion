@@ -2,13 +2,14 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     id("org.jetbrains.kotlin.plugin.serialization") version "2.1.10"
     application
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "com.mohsin"
 version = "0.0.1"
 
 application {
-    mainClass.set("io.ktor.server.netty.EngineMain")
+    mainClass.set("com.mohsin.ApplicationKt")
 }
 
 repositories {
