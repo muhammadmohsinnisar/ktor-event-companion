@@ -1,9 +1,13 @@
 package com.mohsin.services
 
 import com.mohsin.models.Session
+import com.mohsin.models.SessionWithSpeaker
 import com.mohsin.models.Sessions
+import com.mohsin.models.Speaker
+import com.mohsin.models.Speakers
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 class SessionService {
@@ -51,4 +55,28 @@ class SessionService {
             )
         }
     }
+
+    suspend fun getByEventWithSpeakers(eventId: Int): List<SessionWithSpeaker> = dbQuery {
+        (Sessions innerJoin Speakers)
+            .selectAll()
+            .where { Sessions.eventId eq eventId }
+            .map {
+                val speaker = Speaker(
+                    id = it[Speakers.id],
+                    name = it[Speakers.name],
+                    bio = it[Speakers.bio],
+                    eventId = it[Speakers.eventId]
+                )
+                SessionWithSpeaker(
+                    id = it[Sessions.id],
+                    title = it[Sessions.title],
+                    description = it[Sessions.description],
+                    startTime = it[Sessions.startTime],
+                    endTime = it[Sessions.endTime],
+                    eventId = it[Sessions.eventId],
+                    speaker = speaker
+                )
+            }
+    }
+
 }

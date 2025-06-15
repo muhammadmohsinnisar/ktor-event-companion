@@ -26,13 +26,14 @@ fun Route.eventRoutes() {
                 return@get
             }
 
-            val event = service.getById(id)
+            val event = service.getEventWithDetails(id)
             if (event == null) {
                 call.respondText("Event not found", status = HttpStatusCode.NotFound)
             } else {
                 call.respond(event)
             }
         }
+
 
         get("/{id}/qr") {
             val id = call.parameters["id"]?.toIntOrNull()
@@ -47,11 +48,56 @@ fun Route.eventRoutes() {
                 return@get
             }
 
-            val json = Json.encodeToString(Event.serializer(), event)
-            val qrCodeBytes = QrCodeGenerator.generateQrCode(json)
+            // 👇 Use deep link instead of raw JSON
+            val baseUrl = System.getenv("PUBLIC_BASE_URL") ?: "http://localhost:8080"
+            val url = "$baseUrl/events/$id/details"
+            val qrCodeBytes = QrCodeGenerator.generateQrCode(url)
 
             call.respondBytes(qrCodeBytes, contentType = ContentType.Image.PNG)
         }
+
+        get("/{id}/details") {
+            val id = call.parameters["id"]?.toIntOrNull()
+            if (id == null) {
+                call.respondText("Invalid ID", status = HttpStatusCode.BadRequest)
+                return@get
+            }
+
+            val event = service.getEventWithDetails(id)
+            if (event == null) {
+                call.respondText("Event not found", status = HttpStatusCode.NotFound)
+                return@get
+            }
+
+            call.respondText(
+                """
+        <html>
+            <head><title>${event.name}</title></head>
+            <body>
+                <h1>${event.name}</h1>
+                <p><strong>Date:</strong> ${event.date}</p>
+                <p><strong>Location:</strong> ${event.location}</p>
+                <p><strong>Description:</strong> ${event.description}</p>
+
+                <h2>Sessions:</h2>
+                <ul>
+                    ${event.sessions.joinToString("") {
+                    """
+                        <li>
+                            <strong>${it.title}</strong><br>
+                            ${it.startTime} – ${it.endTime}<br>
+                            <em>${it.description}</em><br>
+                            <strong>Speaker:</strong> ${it.speaker.name} (${it.speaker.bio})
+                        </li><br>
+                        """.trimIndent()
+                }}
+                </ul>
+            </body>
+        </html>
+        """.trimIndent(), ContentType.Text.Html
+            )
+        }
+
 
         post {
             val event = call.receive<Event>()

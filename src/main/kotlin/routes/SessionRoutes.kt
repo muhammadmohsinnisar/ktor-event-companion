@@ -15,11 +15,11 @@ fun Route.sessionRoutes() {
         get {
             val eventId = call.parameters["eventId"]?.toIntOrNull()
             if (eventId == null) {
-                call.respondText("Invalid event ID", status = io.ktor.http.HttpStatusCode.BadRequest)
+                call.respondText("Invalid event ID", status = HttpStatusCode.BadRequest)
                 return@get
             }
 
-            val sessions = service.getByEvent(eventId)
+            val sessions = service.getByEventWithSpeakers(eventId)
             call.respond(sessions)
         }
 
