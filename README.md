@@ -15,7 +15,7 @@ A lightweight Kotlin-based backend service built with [Ktor](https://ktor.io/), 
 ---
 
 ## 📁 Project Structure
-
+```
 src/
 ├── main/
 │ ├── kotlin/
@@ -26,6 +26,7 @@ src/
 │ └── resources/
 │ ├── application.conf
 │ └── application.yaml
+```
 ---
 
 ## 🔌 API Endpoints
