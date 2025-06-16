@@ -48,8 +48,8 @@ fun Route.eventRoutes() {
                 return@get
             }
 
-            // 👇 Use deep link instead of raw JSON
-            val baseUrl = System.getenv("PUBLIC_BASE_URL") ?: "http://localhost:8080"
+
+            val baseUrl = "https://ktor-event-companion-production.up.railway.app/" ?: "http://localhost:8080"
             val url = "$baseUrl/events/$id/details"
             val qrCodeBytes = QrCodeGenerator.generateQrCode(url)
 

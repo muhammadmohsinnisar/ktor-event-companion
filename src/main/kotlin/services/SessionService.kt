@@ -7,7 +7,6 @@ import com.mohsin.models.Speaker
 import com.mohsin.models.Speakers
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 class SessionService {
