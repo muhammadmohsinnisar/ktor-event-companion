@@ -50,7 +50,7 @@ fun Route.eventRoutes() {
 
 
             val baseUrl = "https://ktor-event-companion-production.up.railway.app/" ?: "http://localhost:8080"
-            val url = "$baseUrl/events/$id/details"
+            val url = "$baseUrl/events/$id"
             val qrCodeBytes = QrCodeGenerator.generateQrCode(url)
 
             call.respondBytes(qrCodeBytes, contentType = ContentType.Image.PNG)
