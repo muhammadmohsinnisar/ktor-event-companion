@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1013453135933",
+    "project_id": "eventcompanion-99c5c",
+    "storage_bucket": "eventcompanion-99c5c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013453135933:android:d04ce32c616cfbe4790a54",
+        "android_client_info": {
+          "package_name": "com.mohsin.eventcompanion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1013453135933-gjjh459lsnjl4uphlhc9ee3q0pdmre1u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJdhYGc_E118EPB4ayb0xxfq0tYrgO7lg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1013453135933-gjjh459lsnjl4uphlhc9ee3q0pdmre1u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
